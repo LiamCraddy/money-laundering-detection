@@ -1,12 +1,12 @@
 # Detecting Money Laundering in Transaction Networks
 
-* A graph-based machine learning aproach on the IBM AML synthetic dataset*
+* A graph-based machine learning approach on the IBM AML synthetic dataset*
 
 ## 1. Problem
 
-Money laundering is the process of diguising the origin of illegal obtained funds by moving them through a series of financial transactions. Trying to Automate this problem is hard for two reasons: laundering is rare (roughly 1 in 1,000 transactions in this data), and criminals deliberately structure their activitely to blend in with legimitate transactions. The cost of getting it wrong cuts both way, false negative let crime through, false positives bury analysts in useless alerts. This is a billion dollar issue one which will no be discovered in this but instead understand why.
+Money laundering is the process of disguising the origin of illegally obtained funds by moving them through a series of financial transactions. Trying to automate this problem is hard for two reasons: laundering is rare (roughly 1 in 1,000 transactions in this data), and criminals deliberately structure their activity to blend in with legitimate transactions. The cost of getting it wrong cuts both ways: false negatives let crime through; false positives bury analysts in useless alerts. This is a billion-dollar issue, one which will not be discovered in this, but instead understand why.
 
-This project asks: **can laundering accountss be distinguished from legitimate ones using machine leaerning, and how much does network structure matter
+This project asks: **Can laundering accounts be distinguished from legitimate ones using machine learning, and how much does network structure matter? **
 
 ## 2. Data
 IBM "Transactions for Anti-Money Laundering" synthetic dataset, **HI-Small**
@@ -29,17 +29,17 @@ the stated date range — a potential source of temporal leakage to guard agains
 ## 3. Exploratory findings
 ### 3.1 The imbalance defines the problem
 
-Laundering rate 1 in 981 transactions.
+Laundering rate: 1 in 981 transactions.
 So accuracy is a useless metric (predicting "all clean" score ~99.9%).
 So this Evaluation focuses on **precision** and **recall** for the laundering class.
 
 ### 3.2 No single feature separates the classes
-- Median transaction amount: laundering ≈ 8,667 vs legitimate ≈ 1411. Laundering Moves larger sums but no so large that a simple threshold works. Since many legitimate transactions are also large.
-- Distribution plots of per account features (e.g. No. of distinct receivers) show laundering and legitimate accounts heavily overlapping, no separated
-* Conclusion: Sounds obvious but Laundering is only separable via combinations of features which motivates a machine learning approach over hand written rules.*
+- Median transaction amount: laundering ≈ 8,667 vs legitimate ≈ 1411. Laundering moves larger sums, but not so large that a simple threshold works. Since many legitimate transactions are also large.
+- Distribution plots of per-account features (e.g. No. of distinct receivers) show laundering and legitimate accounts heavily overlapping, not separated
+* Conclusion: Sounds obvious, but Laundering is only separable via combinations of features, which motivates a machine learning approach over hand-written rules.*
 
 ### 3.3 Laundering patterns by eye
-Looking through the data through individual suspect account revealed:
+Looking through the data for individual suspect accounts revealed:
 - A **cycle**: Money leaving an account and returning through intermediaries.
 - A **fan-out**: one account distributing to many.
 
@@ -56,7 +56,7 @@ Counting all labelled laundering attempts by type discovered.
 | Random | 41 | 191 |
 | Fan-in | 40 | 318 |
 
-*Key insight: Laundering is spread evenly across all 8 pattern with no single dominant shape to target. With most patterns reducing to two primitives **branching** (fans) and **looping** (cycles).*
+*Key insight: Laundering is spread evenly across all 8 patterns, with no single dominant shape to target. With most patterns reducing to two primitives: **branching** (fans) and **looping** (cycles).*
 
 ## 4. Feature engineering
 
@@ -90,7 +90,7 @@ Building the full transaction graph enabled structural features:
 ### 5.1 Baselines and the threshold lesson
 | Model | Notes |
 |---|---|
-| Random Forest (default 0.5 threshold) | recall 0.015 — far too cautious, almost never flags |
+| Random Forest (default 0.5 threshold) | recall 0.015 — far too cautious, rarely flags |
 | Random Forest (threshold sweep) | recall rises to ~0.32 at threshold 0.05, precision falls to ~0.06 |
 | LightGBM | recall 0.74 at default threshold, but precision collapses to ~0.04 |
 
